@@ -7,8 +7,18 @@ project "Renderer"
 
    files { "src/**.h", "src/**.cpp", "**.rc", "**.h" }
 
+   externalproject "SDL"
+   location "../vendor/SDL/VisualC/SDL/"
+   kind "StaticLib"
+   language "C"
+
    includedirs
    {
+      "../vendor/SDL/include"
+   }
+
+   links{
+      "SDL3"
    }
 
    targetdir ("../output/bin/" .. outputdir .. "/%{prj.name}")

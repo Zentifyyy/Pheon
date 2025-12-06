@@ -9,3 +9,7 @@
 *.sln
 
 # Exclude
+/output
+/Renderer/bin
+/Renderer/obj
+/x64
