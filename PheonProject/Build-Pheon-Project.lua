@@ -1,4 +1,4 @@
-project "Renderer"
+project "PheonProject"
    kind "ConsoleApp"
    language "C++"
    cppdialect "C++latest"
@@ -7,18 +7,13 @@ project "Renderer"
 
    files { "src/**.h", "src/**.cpp", "**.rc", "**.h" }
 
-   externalproject "SDL"
-   location "../vendor/SDL/VisualC/SDL/"
-   kind "StaticLib"
-   language "C"
-
-   includedirs
-   {
+   includedirs{
+      "../Pheon/include",
       "../vendor/SDL/include"
    }
 
    links{
-      "SDL3"
+      "Pheon"
    }
 
    targetdir ("../output/bin/" .. outputdir .. "/%{prj.name}")

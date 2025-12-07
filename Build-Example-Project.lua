@@ -1,8 +1,8 @@
 -- premake5.lua
-workspace "Renderer"
+workspace "PheonProject"
    architecture "x64"
    configurations { "Debug", "Release", "Dist" }
-   startproject "Renderer"
+   startproject "PheonProject"
 
    -- Workspace-wide build options for MSVC
    filter "system:windows"
@@ -10,4 +10,5 @@ workspace "Renderer"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-include "Renderer/Build-Renderer.lua"
+include "Pheon/Build-Pheon.lua"
+include "PheonProject/Build-Pheon-Project.lua"
