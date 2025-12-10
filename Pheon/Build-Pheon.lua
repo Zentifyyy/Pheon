@@ -10,15 +10,22 @@ project "Pheon"
    includedirs
    {
       "include",
-      "../vendor/SDL/include"
+      "../vendor/SDL/include",
+      "../vendor/SDL_ttf/include",
    }
 
    links{
-        "SDL"
+        "SDL",
+        "SDL_ttf",
    }
 
    externalproject "SDL"
    location "../vendor/SDL/VisualC/SDL/"
+   kind "StaticLib"
+   language "C"
+
+   externalproject "SDL_ttf"
+   location "../vendor/SDL_ttf/VisualC/"
    kind "StaticLib"
    language "C"
 

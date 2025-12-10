@@ -9,7 +9,8 @@ project "PheonProject"
 
    includedirs{
       "../Pheon/include",
-      "../vendor/SDL/include"
+      "../vendor/SDL/include",
+      "../vendor/SDL_ttf/include"
    }
 
    links{

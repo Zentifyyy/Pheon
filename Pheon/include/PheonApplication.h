@@ -8,6 +8,7 @@ namespace Pheon {
 	// Run InitLoop() to keep the window open until the user closes it!
 	class Application {
 	public:
+		
 		Application(const char* WindowName, const int WindowWidth, const int WindowHeight,
 			const SDL_WindowFlags WindowFlags);
 
@@ -20,11 +21,19 @@ namespace Pheon {
 		void InitLoop(int FrameRate);
 
 		// Define what happens every frame in your own file.
-		virtual void Update();
+		virtual void Update() {};
+
+		// Define what happens every time an SDL_Event is triggered in your own file.
+		virtual void OnEvent(SDL_Event* Event) {};
+		
+		// Close Current Window
+		void CloseWindow();
 
 		SDL_Window* m_Window = nullptr;
 
 		SDL_Renderer* m_Renderer = nullptr;
+
+		bool m_IsMouseClicked = false;
 
 	private:
 

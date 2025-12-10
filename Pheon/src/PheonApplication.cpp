@@ -38,7 +38,10 @@ namespace Pheon {
 		{
 			frameStart = SDL_GetTicks(); // Get start of frame
 
+			SDL_RenderClear(m_Renderer);
+
 			Update();
+
 			SDL_RenderPresent(m_Renderer);
 
 			frameTime = SDL_GetTicks() - frameStart; // Get time frame has elapsed
@@ -46,18 +49,22 @@ namespace Pheon {
 			if (frameDelay > frameTime)
 				SDL_Delay(frameDelay - frameTime); // Delay next frame
 
-
 			// If x pressed close window
 			SDL_Event event;
 			while (SDL_PollEvent(&event))
 			{
 				if (event.type == SDL_EVENT_QUIT)
-				{
 					m_IsWindowOpen = false;
-				}
-				SDL_Delay(100);
-
+				else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_UP)
+					m_IsMouseClicked = !m_IsMouseClicked;
+				else OnEvent(&event);
 			}
+
 		}
+	}
+
+	void Application::CloseWindow() 
+	{
+		m_IsWindowOpen = false;
 	}
 }
