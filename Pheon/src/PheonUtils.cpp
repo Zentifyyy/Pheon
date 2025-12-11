@@ -44,5 +44,16 @@ namespace Pheon
 		{
 			SDL_SetRenderDrawColor(Renderer, Colour.r, Colour.g, Colour.b, Colour.a);
 		}
+	
+		Pheon::Vector2 GetTextSize(const char* Text, TTF_Font* Font, const float Scale)
+		{
+			SDL_Surface* surface = TTF_RenderText_Solid(Font, Text, NULL, Colours::TextColour);
+			
+			const Vector2 size{ surface->w * Scale, surface->h * Scale };
+			
+			SDL_DestroySurface(surface);
+
+			return size;
+		}
 	}
 }

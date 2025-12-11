@@ -53,13 +53,21 @@ namespace Pheon {
 			SDL_Event event;
 			while (SDL_PollEvent(&event))
 			{
-				if (event.type == SDL_EVENT_QUIT)
+				if (event.type == SDL_EVENT_QUIT) 
+				{
 					m_IsWindowOpen = false;
-				else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_UP)
+				}
+				else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_UP) 
+				{
 					m_IsMouseClicked = !m_IsMouseClicked;
-				else OnEvent(&event);
-			}
+				}
+				else if (event.type == SDL_EVENT_WINDOW_RESIZED || event.type == SDL_EVENT_WINDOW_SHOWN) 
+				{
+					SDL_GetWindowSize(m_Window, &m_WindowWidth, &m_WindowHeight);
+				}
 
+				OnEvent(&event);
+			}
 		}
 	}
 

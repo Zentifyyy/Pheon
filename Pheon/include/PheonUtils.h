@@ -1,5 +1,7 @@
 #pragma once
 #include "SDL3/SDL.h"
+#include "SDL3_ttf/SDL_ttf.h"
+#include "PheonApplication.h"
 
 namespace Pheon 
 {
@@ -11,6 +13,18 @@ namespace Pheon
 		// If PositionOrSize == True, will return a Vector2 with the position.
 		// If PositionOrSize == False, will return a Vector2 with the size.
 		Vector2(const SDL_FRect& Rect, bool PositionOrSize);
+
+		const Vector2 operator / (int other) 
+		{
+			return Vector2(x /= other,y /= other);
+		}
+
+		const Vector2 operator - (Vector2 other) 
+		{
+			return Vector2(x -= other.x, y -= other.y);
+		}
+
+
 	public:
 		float x, y;
 	};
@@ -34,5 +48,7 @@ namespace Pheon
 		Pheon::Vector2 CenterPosInRect(const SDL_FRect& Rect);
 
 		void SetRenderColour(SDL_Renderer* Renderer, const SDL_Color& Colour);
+
+		Pheon::Vector2 GetTextSize(const char* Text, TTF_Font* Font, const float Scale);
 	}
 }

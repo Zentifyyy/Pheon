@@ -1,5 +1,6 @@
 #pragma once
 #include "SDL3/SDL.h"
+#include "SDL3_ttf/SDL_ttf.h"
 
 namespace Pheon {
 
@@ -34,6 +35,10 @@ namespace Pheon {
 		SDL_Renderer* m_Renderer = nullptr;
 
 		bool m_IsMouseClicked = false;
+
+		int m_WindowWidth{}, m_WindowHeight{};
+
+		TTF_Font* m_MainFont = TTF_OpenFont("fonts/Roboto-Regular.ttf", 50);
 
 	private:
 
