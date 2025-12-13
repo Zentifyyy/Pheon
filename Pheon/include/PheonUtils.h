@@ -19,9 +19,14 @@ namespace Pheon
 			return Vector2(x /= other,y /= other);
 		}
 
-		const Vector2 operator - (Vector2 other) 
+		const Vector2 operator - (const Vector2& other)
 		{
-			return Vector2(x -= other.x, y -= other.y);
+			return Vector2(x - other.x, y - other.y);
+		}
+
+		const Vector2 operator + (const Vector2& other)
+		{
+			return Vector2(x + other.x, y + other.y);
 		}
 
 
@@ -34,8 +39,8 @@ namespace Pheon
 		const SDL_Color BackgroundColour{ 20, 20, 20, 255 };
 
 		const SDL_Color ButtonColour{ 35, 35, 35, 255 };
-
 		const SDL_Color ButtonColourHovered{ 25, 25, 25, 255 };
+		const SDL_Color ButtonColourPressed{ 15, 15, 15, 255 };
 
 		const SDL_Color TextColour{ 255, 255, 255, 255 };
 

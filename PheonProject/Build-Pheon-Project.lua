@@ -10,7 +10,8 @@ project "PheonProject"
    includedirs{
       "../Pheon/include",
       "../vendor/SDL/include",
-      "../vendor/SDL_ttf/include"
+      "../vendor/SDL_ttf/include",
+      "../vendor/SDL_image/include"
    }
 
    links{

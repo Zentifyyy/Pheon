@@ -12,11 +12,13 @@ project "Pheon"
       "include",
       "../vendor/SDL/include",
       "../vendor/SDL_ttf/include",
+      "../vendor/SDL_image/include"
    }
 
    links{
         "SDL",
         "SDL_ttf",
+        "SDL_image"
    }
 
    externalproject "SDL"
@@ -26,6 +28,11 @@ project "Pheon"
 
    externalproject "SDL_ttf"
    location "../vendor/SDL_ttf/VisualC/"
+   kind "StaticLib"
+   language "C"
+
+   externalproject "SDL_image"
+   location "../vendor/SDL_image/VisualC/"
    kind "StaticLib"
    language "C"
 

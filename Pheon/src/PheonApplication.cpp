@@ -28,8 +28,10 @@ namespace Pheon {
 		SDL_DestroySurface(m_WindowIcon);
 	}
 
-	void Application::InitLoop(const int FrameRate)
+	void Application::InitLoop(const int& FrameRate)
 	{
+		Start();
+
 		Uint32 frameStart;
 		int frameTime;
 		const int frameDelay = 1000 / FrameRate;

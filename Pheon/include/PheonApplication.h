@@ -19,10 +19,13 @@ namespace Pheon {
 		~Application();
 
 		// Initialise update loop with specific framerate
-		void InitLoop(int FrameRate);
+		void InitLoop(const int& FrameRate);
 
 		// Define what happens every frame in your own file.
 		virtual void Update() {};
+
+		// Define what happens at the start of the application in your own file.
+		virtual void Start() {};
 
 		// Define what happens every time an SDL_Event is triggered in your own file.
 		virtual void OnEvent(SDL_Event* Event) {};
@@ -38,7 +41,7 @@ namespace Pheon {
 
 		int m_WindowWidth{}, m_WindowHeight{};
 
-		TTF_Font* m_MainFont = TTF_OpenFont("fonts/Roboto-Regular.ttf", 50);
+		TTF_Font* m_MainFont = TTF_OpenFont("fonts/Roboto-Regular.ttf", 100);
 
 	private:
 
