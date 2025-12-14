@@ -5,7 +5,7 @@
 class ExampleProject : public Pheon::Application{
 public:
 
-	using Application::Application;
+	Application::Application;
 
 	void Start() override 
 	{
@@ -19,26 +19,36 @@ public:
 			m_QuitButtonRect = { (float)m_WindowWidth - 110, (float)m_WindowHeight - 60, 100, 50 };
 			
 			m_LabelPos = { m_WindowWidth / 2 - Pheon::Utils::GetTextSize("Hello World", m_MainFont, .4f).x / 2, 100 };	
+	
+			m_LogoPos = m_LabelPos - m_LogoOffset;
 		}
 	}
 
 	void Update() override
 	{
-		if (Pheon::Widgets::Button("Quit", m_QuitButtonRect, this))
+		m_Label.Render();
+		m_Image.Render();
+
+		m_ExitButton.Render();
+
+		if (m_ExitButton.Pressed)
 			CloseWindow();
-
-		Pheon::Widgets::Label("Hello World", m_LabelPos, .4f, this);
-
-		Pheon::Widgets::Image("img/icon.bmp", m_LabelPos - m_LogoOffset, .175f, this);
 	}
 
 private:
-	SDL_FRect m_QuitButtonRect{};
 
-	Pheon::Vector2 m_LabelPos{0,0};
+	SDL_FRect m_QuitButtonRect{0,0,100,50};
 
-	Pheon::Vector2 m_LogoPos{0,0};
-	const Pheon::Vector2 m_LogoOffset{75,0};
+	Pheon::Vector2 m_LabelPos{ 0,0 };
+
+	Pheon::Vector2 m_LogoPos{ 0,0 };
+	const Pheon::Vector2 m_LogoOffset{ 50,0 };
+
+	Pheon::Widgets::PheonLabel m_Label{ "Hello World", &m_LabelPos, 0.4f, this };
+
+	Pheon::Widgets::PheonButton m_ExitButton{ "Exit", &m_QuitButtonRect, this };
+
+	Pheon::Widgets::PheonImage m_Image{ "img/icon.bmp", &m_LogoPos , .175f, this };
 };
 
 int main()

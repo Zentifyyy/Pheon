@@ -4,62 +4,86 @@ namespace Pheon
 {
 	namespace Widgets
 	{
-		bool Button(const char* ButtonText, const SDL_FRect& ButtonRect, Pheon::Application* Application)
+		// Pheon Button
+		PheonButton::PheonButton(const char* ButtonText, SDL_FRect* ButtonRect, Application* Application)
+			: m_Text(ButtonText), m_Rect(ButtonRect), app(Application) {};
+
+		void PheonButton::Render() 
 		{
-			if (Utils::IsMouseHoveringRect(ButtonRect))
+			if (Utils::IsMouseHoveringRect(*m_Rect))
 			{
-				if (!Application->m_IsMouseClicked) {
-					Utils::SetRenderColour(Application->m_Renderer, Colours::ButtonColourHovered);
-					SDL_RenderFillRect(Application->m_Renderer, &ButtonRect);
+				if (!app->m_IsMouseClicked) {
+					Utils::SetRenderColour(app->m_Renderer, Colours::ButtonColourHovered);
+					SDL_RenderFillRect(app->m_Renderer, m_Rect);
+					Pressed = false;
 				}
 				else
 				{
-					Utils::SetRenderColour(Application->m_Renderer, Colours::ButtonColourPressed);
-					SDL_RenderFillRect(Application->m_Renderer, &ButtonRect);
-					return true;
+					Utils::SetRenderColour(app->m_Renderer, Colours::ButtonColourPressed);
+					SDL_RenderFillRect(app->m_Renderer, m_Rect);
+					Pressed = true;
 				}
 			}
 			else
 			{
-				Utils::SetRenderColour(Application->m_Renderer, Colours::ButtonColour);
-				SDL_RenderFillRect(Application->m_Renderer, &ButtonRect);
+				Utils::SetRenderColour(app->m_Renderer, Colours::ButtonColour);
+				SDL_RenderFillRect(app->m_Renderer, m_Rect);
+				Pressed = false;
 			}
 
-			const Vector2 TextPos = Pheon::Utils::CenterPosInRect(ButtonRect) -
-				Pheon::Utils::GetTextSize(ButtonText, Application->m_MainFont, ButtonRect.w * ButtonRect.h / 30000) / 2;
+			Vector2 TextPos = Pheon::Utils::CenterPosInRect(*m_Rect) -
+				Pheon::Utils::GetTextSize(m_Text, app->m_MainFont, 0.25f) / 2;
 
-			Label(ButtonText, TextPos, ButtonRect.w * ButtonRect.h / 30000, Application);
+			PheonLabel label{ m_Text, &TextPos, 0.25f , app };
+			label.Render();
 
-			SDL_SetRenderDrawColor(Application->m_Renderer, 0, 0, 0, 255);
-
-			return false;
+			SDL_SetRenderDrawColor(app->m_Renderer, 0, 0, 0, 255);
 		}
 
-		void Label(const char* Text, const Vector2& position, const float& Scale, Application* Application)
+		// Pheon Label
+		PheonLabel::PheonLabel(const char* Text, Vector2* position, const float& Scale, Application* Application)
+			: m_Text(Text),m_Position(position), m_Application(Application), m_Scale(Scale) 
 		{
-			SDL_Surface* surface = TTF_RenderText_Solid(Application->m_MainFont, Text, NULL, Colours::TextColour);
+			m_Surface = TTF_RenderText_Solid(m_Application->m_MainFont, m_Text, NULL, Colours::TextColour);
 
-			SDL_Texture* texture = SDL_CreateTextureFromSurface(Application->m_Renderer, surface);
+			m_Texture = SDL_CreateTextureFromSurface(m_Application->m_Renderer, m_Surface);
+		};
 
-			const SDL_FRect TextureRect{ position.x, position.y, texture->w * Scale, texture->h * Scale };
+		void PheonLabel::Render()
+		{
+			m_Rect = { m_Position->x, m_Position->y, m_Texture->w * m_Scale, m_Texture->h * m_Scale };
 
-			SDL_RenderTexture(Application->m_Renderer, texture, NULL, &TextureRect);
-
-			SDL_DestroySurface(surface);
-			SDL_DestroyTexture(texture);
+			SDL_RenderTexture(m_Application->m_Renderer, m_Texture, NULL, &m_Rect);
 		}
 
-		void Image(const char* FilePath,const Vector2& pos, const float& Scale,Application* Application)
+		PheonLabel::~PheonLabel()
 		{
-			SDL_Surface* surface = IMG_Load(FilePath);
+			SDL_DestroySurface(m_Surface);
+			SDL_DestroyTexture(m_Texture);
+		}
 
-			SDL_Texture* texture = SDL_CreateTextureFromSurface(Application->m_Renderer,surface);
+		// Pheon Image
+		PheonImage::PheonImage(const char* FilePath, Vector2* pos, const float& Scale, Application* Application)
+			: m_Pos(pos), m_Application(Application), m_Scale(Scale)
+		{
+			m_Surface = IMG_Load(FilePath);
 
-			const SDL_FRect rect{pos.x,pos.y,texture->w * Scale,texture->h * Scale};
+			m_Texture = SDL_CreateTextureFromSurface(Application->m_Renderer, m_Surface);
 
-			SDL_RenderTexture(Application->m_Renderer,texture,NULL, &rect);
-			SDL_DestroyTexture(texture);
-			SDL_DestroySurface(surface);
+			m_Rect = { pos->x,pos->y, m_Texture->w * Scale, m_Texture->h * Scale };
+		};
+
+		void PheonImage::Render()
+		{
+			m_Rect = { m_Pos->x,m_Pos->y,m_Texture->w * m_Scale,m_Texture->h * m_Scale };
+
+			SDL_RenderTexture(m_Application->m_Renderer, m_Texture, NULL, &m_Rect);
+		}
+
+		PheonImage::~PheonImage() 
+		{
+			SDL_DestroyTexture(m_Texture);
+			SDL_DestroySurface(m_Surface);
 		}
 	}
 }
