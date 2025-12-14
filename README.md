@@ -1,7 +1,4 @@
-<div style="display:flex; align-items:center;">
 <img src="https://raw.githubusercontent.com/Zentifyyy/Pheon/refs/heads/main/PheonProject/img/icon.bmp" width=48>
-<p1 style="font-size:30; padding-left:20px"> Pheon<p1>
-</div>
 
 # 
 Pheon is a simple GUI application framework written in C++ using SDL3, SDL3_ttf for font usage and SDL3_image for images. Pheon doesnt come with any bells or whistles and is designed for single page applications which dont need fancy looking graphics.
