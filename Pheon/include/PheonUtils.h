@@ -40,8 +40,9 @@ namespace Pheon
 		const SDL_Color ButtonColour{ 35, 35, 35, 255 };
 		const SDL_Color ButtonColourHovered{ 25, 25, 25, 255 };
 		const SDL_Color ButtonColourPressed{ 15, 15, 15, 255 };
+		const SDL_Color ButtonBorderColour{ 60, 60, 60, 255 };
 
-		const SDL_Color TextColour{ 255, 255, 255, 255 };
+		const SDL_Color TextColour{ 230, 230, 230, 255 };
 
 	}
 

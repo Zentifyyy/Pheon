@@ -1,36 +1,34 @@
 #include "PheonApplication.h"
-#include <PheonWidgets.h>
+#include "PheonWidgets.h"
 
-class ExampleProject : public Pheon::Application{
+class ExampleProject : public Pheon::Application {
 public:
 
 	Application::Application;
 
-	void Start() override 
-	{
-	}
+	void Start() override {}
 
-	void OnEvent(SDL_Event* Event) override 
+	void OnEvent(SDL_Event* Event) override
 	{
 		if (Event->type == SDL_EVENT_WINDOW_RESIZED || Event->type == SDL_EVENT_WINDOW_SHOWN)
 		{
 			m_QuitButtonRect = { (float)m_WindowWidth - 110, (float)m_WindowHeight - 60, 100, 50 };
-			
-			m_LabelPos = { m_WindowWidth / 2 - Pheon::Utils::GetTextSize("Hello World", m_MainFont, .4f).x / 2, 100 };	
-	
+
+			m_LabelPos = { m_WindowWidth / 2 - Pheon::Utils::GetTextSize("Hello World", m_MainFont, .4f).x / 2, 100 };
+
 			m_LogoPos = m_LabelPos - m_LogoOffset;
 		}
 	}
 
 	void Update() override
 	{
-		if (m_ExitButton.Pressed)
+		if (m_ExitButton)
 			CloseWindow();
 	}
 
 private:
 
-	SDL_FRect m_QuitButtonRect{0,0,100,50};
+	SDL_FRect m_QuitButtonRect{ 0,0,100,50 };
 
 	Pheon::Vector2 m_LabelPos{ 0,0 };
 

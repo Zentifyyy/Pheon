@@ -63,10 +63,12 @@ namespace Pheon
 				Pressed = false;
 			}
 
-			TextPos = Pheon::Utils::CenterPosInRect(*m_Rect) - 
-				Pheon::Utils::GetTextSize(m_Text, app->m_MainFont, 0.25f) / 2;
+			Utils::SetRenderColour(app->m_Renderer,Colours::ButtonBorderColour);
+			SDL_RenderRect(app->m_Renderer, m_Rect);
 
-			SDL_SetRenderDrawColor(app->m_Renderer, 0, 0, 0, 255);
+			TextPos = Utils::CenterPosInRect(*m_Rect) - Utils::GetTextSize(m_Text, app->m_MainFont, 0.25f) / 2;
+
+			Utils::SetRenderColour(app->m_Renderer, Colours::BackgroundColour);
 		}
 
 		PheonButton::~PheonButton() 

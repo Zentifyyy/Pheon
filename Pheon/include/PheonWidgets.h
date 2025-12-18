@@ -36,6 +36,8 @@ namespace Pheon
 
 			void Render();
 
+			operator bool() { return Pressed; };
+
 			~PheonButton();
 
 		public:
