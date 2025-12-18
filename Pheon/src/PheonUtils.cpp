@@ -18,7 +18,6 @@ namespace Pheon
 
 	namespace Utils
 	{
-
 		bool IsMouseHoveringRect(const SDL_FRect& Rect)
 		{
 			float mousePosX{}, mousePosY{};

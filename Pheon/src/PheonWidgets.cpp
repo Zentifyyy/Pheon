@@ -4,11 +4,43 @@ namespace Pheon
 {
 	namespace Widgets
 	{
+		// Pheon Label
+		PheonLabel::PheonLabel(const char* Text, Vector2* position, const float& Scale, Application* Application)
+			: m_Text(Text),m_Position(position), m_Application(Application), m_Scale(Scale) 
+		{
+			m_Surface = TTF_RenderText_Solid(m_Application->m_MainFont, m_Text, NULL, Colours::TextColour);
+
+			m_Texture = SDL_CreateTextureFromSurface(m_Application->m_Renderer, m_Surface);
+
+			Application->m_RenderQueue.emplace_back(this);
+		};
+
+		void PheonLabel::Render()
+		{
+			m_Rect = { m_Position->x, m_Position->y, m_Texture->w * m_Scale, m_Texture->h * m_Scale };
+
+			SDL_RenderTexture(m_Application->m_Renderer, m_Texture, NULL, &m_Rect);
+		}
+
+		PheonLabel::~PheonLabel()
+		{
+			SDL_DestroySurface(m_Surface);
+			SDL_DestroyTexture(m_Texture);
+		}
+
 		// Pheon Button
 		PheonButton::PheonButton(const char* ButtonText, SDL_FRect* ButtonRect, Application* Application)
-			: m_Text(ButtonText), m_Rect(ButtonRect), app(Application) {};
+			: m_Text(ButtonText), m_Rect(ButtonRect), app(Application)
+		{
+			TextPos = Pheon::Utils::CenterPosInRect(*m_Rect) - 
+				Pheon::Utils::GetTextSize(ButtonText, app->m_MainFont, 0.25f) / 2;
 
-		void PheonButton::Render() 
+			Application->m_RenderQueue.emplace_back(this);
+			
+			m_label = new PheonLabel{ ButtonText, &TextPos, 0.25f , app };
+		};
+
+		void PheonButton::Render()
 		{
 			if (Utils::IsMouseHoveringRect(*m_Rect))
 			{
@@ -31,35 +63,15 @@ namespace Pheon
 				Pressed = false;
 			}
 
-			Vector2 TextPos = Pheon::Utils::CenterPosInRect(*m_Rect) -
+			TextPos = Pheon::Utils::CenterPosInRect(*m_Rect) - 
 				Pheon::Utils::GetTextSize(m_Text, app->m_MainFont, 0.25f) / 2;
-
-			PheonLabel label{ m_Text, &TextPos, 0.25f , app };
-			label.Render();
 
 			SDL_SetRenderDrawColor(app->m_Renderer, 0, 0, 0, 255);
 		}
 
-		// Pheon Label
-		PheonLabel::PheonLabel(const char* Text, Vector2* position, const float& Scale, Application* Application)
-			: m_Text(Text),m_Position(position), m_Application(Application), m_Scale(Scale) 
+		PheonButton::~PheonButton() 
 		{
-			m_Surface = TTF_RenderText_Solid(m_Application->m_MainFont, m_Text, NULL, Colours::TextColour);
-
-			m_Texture = SDL_CreateTextureFromSurface(m_Application->m_Renderer, m_Surface);
-		};
-
-		void PheonLabel::Render()
-		{
-			m_Rect = { m_Position->x, m_Position->y, m_Texture->w * m_Scale, m_Texture->h * m_Scale };
-
-			SDL_RenderTexture(m_Application->m_Renderer, m_Texture, NULL, &m_Rect);
-		}
-
-		PheonLabel::~PheonLabel()
-		{
-			SDL_DestroySurface(m_Surface);
-			SDL_DestroyTexture(m_Texture);
+			delete m_label;
 		}
 
 		// Pheon Image
@@ -71,6 +83,8 @@ namespace Pheon
 			m_Texture = SDL_CreateTextureFromSurface(Application->m_Renderer, m_Surface);
 
 			m_Rect = { pos->x,pos->y, m_Texture->w * Scale, m_Texture->h * Scale };
+
+			Application->m_RenderQueue.emplace_back(this);
 		};
 
 		void PheonImage::Render()

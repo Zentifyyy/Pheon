@@ -32,8 +32,8 @@ namespace Pheon {
 	{
 		Start();
 
-		Uint32 frameStart;
-		int frameTime;
+		Uint64 frameStart;
+		Uint64 frameTime;
 		const int frameDelay = 1000 / FrameRate;
 
 		while (m_IsWindowOpen)
@@ -43,6 +43,11 @@ namespace Pheon {
 			SDL_RenderClear(m_Renderer);
 
 			Update();
+
+			for (int i = 0; i < m_RenderQueue.size(); i++)
+			{
+				m_RenderQueue[i]->Render();
+			}
 
 			SDL_RenderPresent(m_Renderer);
 
@@ -55,17 +60,28 @@ namespace Pheon {
 			SDL_Event event;
 			while (SDL_PollEvent(&event))
 			{
-				if (event.type == SDL_EVENT_QUIT) 
+				switch (event.type)
 				{
+				case SDL_EVENT_QUIT:
 					m_IsWindowOpen = false;
-				}
-				else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_UP) 
-				{
+					break;
+
+				case SDL_EVENT_MOUSE_BUTTON_DOWN:
 					m_IsMouseClicked = !m_IsMouseClicked;
-				}
-				else if (event.type == SDL_EVENT_WINDOW_RESIZED || event.type == SDL_EVENT_WINDOW_SHOWN) 
-				{
+					break;
+				case SDL_EVENT_MOUSE_BUTTON_UP:
+					m_IsMouseClicked = !m_IsMouseClicked;
+					break;
+
+				case SDL_EVENT_WINDOW_SHOWN:
 					SDL_GetWindowSize(m_Window, &m_WindowWidth, &m_WindowHeight);
+					break;
+				case SDL_EVENT_WINDOW_RESIZED:
+					SDL_GetWindowSize(m_Window, &m_WindowWidth, &m_WindowHeight);
+					break;
+
+				default:
+					break;
 				}
 
 				OnEvent(&event);

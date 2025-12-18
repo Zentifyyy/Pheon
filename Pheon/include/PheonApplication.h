@@ -1,6 +1,8 @@
 #pragma once
 #include "SDL3/SDL.h"
 #include "SDL3_ttf/SDL_ttf.h"
+#include "PheonWidgetBase.h"
+#include "vector"
 
 namespace Pheon {
 
@@ -42,6 +44,8 @@ namespace Pheon {
 		int m_WindowWidth{}, m_WindowHeight{};
 
 		TTF_Font* m_MainFont = TTF_OpenFont("fonts/Roboto-Regular.ttf", 100);
+
+		std::vector<PheonWidget*> m_RenderQueue{};
 
 	private:
 

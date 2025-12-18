@@ -1,6 +1,5 @@
 #include "PheonApplication.h"
-#include "PheonWidgets.h"
-#include <iostream>
+#include <PheonWidgets.h>
 
 class ExampleProject : public Pheon::Application{
 public:
@@ -9,7 +8,6 @@ public:
 
 	void Start() override 
 	{
-		std::cout << "Hello World\n";
 	}
 
 	void OnEvent(SDL_Event* Event) override 
@@ -26,11 +24,6 @@ public:
 
 	void Update() override
 	{
-		m_Label.Render();
-		m_Image.Render();
-
-		m_ExitButton.Render();
-
 		if (m_ExitButton.Pressed)
 			CloseWindow();
 	}

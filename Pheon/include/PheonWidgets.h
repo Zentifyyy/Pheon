@@ -1,31 +1,14 @@
 #pragma once
 #include "SDL3_image/SDL_image.h"
-#include "PheonApplication.h"
 #include "PheonUtils.h"
+#include "PheonApplication.h"
+#include "PheonWidgetBase.h"
 
 namespace Pheon 
 {
 	namespace Widgets
 	{
-		class PheonButton{
-		public:
-
-			PheonButton(const char* ButtonText, SDL_FRect* ButtonRect, Application* Application);
-		
-			void Render();
-
-		public:
-
-			bool Pressed = false;
-
-			const char* m_Text;
-			SDL_FRect* m_Rect;
-			SDL_FRect m_LabelPos{};
-
-			Application* app;
-		};
-
-		class PheonLabel{
+		class PheonLabel: public PheonWidget {
 		public:
 
 			PheonLabel(const char* Text, Vector2* position, const float& Scale, Application* Application);
@@ -46,7 +29,28 @@ namespace Pheon
 			SDL_Texture* m_Texture = nullptr;
 		};
 
-		class PheonImage{
+		class PheonButton : public PheonWidget {
+		public:
+
+			PheonButton(const char* ButtonText, SDL_FRect* ButtonRect, Application* Application);
+
+			void Render();
+
+			~PheonButton();
+
+		public:
+
+			bool Pressed = false;
+
+			const char* m_Text;
+			SDL_FRect* m_Rect;
+			Vector2 TextPos{0,0};
+			PheonLabel* m_label;
+			Application* app;
+		};
+
+
+		class PheonImage : public PheonWidget {
 		public:
 			PheonImage(const char* FilePath, Vector2* pos, const float& Scale, Application* Application);
 
