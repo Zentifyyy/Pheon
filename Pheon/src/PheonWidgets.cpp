@@ -17,6 +17,9 @@ namespace Pheon
 
 		void PheonLabel::UpdateText(const char* Text)
 		{
+			SDL_DestroySurface(m_Surface);
+			SDL_DestroyTexture(m_Texture);
+
 			m_Surface = TTF_RenderText_Solid(m_Application->m_MainFont, Text, NULL, Colours::TextColour);
 
 			m_Texture = SDL_CreateTextureFromSurface(m_Application->m_Renderer, m_Surface);
