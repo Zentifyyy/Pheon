@@ -6,14 +6,21 @@ namespace Pheon
 	{
 		// Pheon Label
 		PheonLabel::PheonLabel(const char* Text, Vector2* position, const float& Scale, Application* Application)
-			: m_Text(Text),m_Position(position), m_Application(Application), m_Scale(Scale) 
+			: m_Position(position), m_Application(Application), m_Scale(Scale) 
 		{
-			m_Surface = TTF_RenderText_Solid(m_Application->m_MainFont, m_Text, NULL, Colours::TextColour);
+			m_Surface = TTF_RenderText_Solid(m_Application->m_MainFont, Text, NULL, Colours::TextColour);
 
 			m_Texture = SDL_CreateTextureFromSurface(m_Application->m_Renderer, m_Surface);
 
 			Application->m_RenderQueue.emplace_back(this);
 		};
+
+		void PheonLabel::UpdateText(const char* Text)
+		{
+			m_Surface = TTF_RenderText_Solid(m_Application->m_MainFont, Text, NULL, Colours::TextColour);
+
+			m_Texture = SDL_CreateTextureFromSurface(m_Application->m_Renderer, m_Surface);
+		}
 
 		void PheonLabel::Render()
 		{
@@ -33,11 +40,11 @@ namespace Pheon
 			: m_Text(ButtonText), m_Rect(ButtonRect), app(Application)
 		{
 			TextPos = Pheon::Utils::CenterPosInRect(*m_Rect) - 
-				Pheon::Utils::GetTextSize(ButtonText, app->m_MainFont, 0.25f) / 2;
+				Pheon::Utils::GetTextSize(m_Text, app->m_MainFont, 0.25f) / 2;
 
 			Application->m_RenderQueue.emplace_back(this);
 			
-			m_label = new PheonLabel{ ButtonText, &TextPos, 0.25f , app };
+			m_label = new PheonLabel{ ButtonText , &TextPos, 0.25f , app };
 		};
 
 		void PheonButton::Render()

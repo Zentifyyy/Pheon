@@ -3,6 +3,7 @@
 #include "PheonUtils.h"
 #include "PheonApplication.h"
 #include "PheonWidgetBase.h"
+#include <string>
 
 namespace Pheon 
 {
@@ -13,12 +14,13 @@ namespace Pheon
 
 			PheonLabel(const char* Text, Vector2* position, const float& Scale, Application* Application);
 
-			~PheonLabel();
-		
+			void UpdateText(const char* Text);
+
 			void Render();
+			
+			~PheonLabel();
 
 		public:
-			const char* m_Text;
 			Vector2* m_Position;
 			SDL_FRect m_Rect{};
 			float m_Scale;
