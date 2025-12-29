@@ -1,4 +1,5 @@
 #include "PheonApplication.h"
+#include <iostream>
 
 namespace Pheon {
 
@@ -53,11 +54,7 @@ namespace Pheon {
 
 			frameTime = SDL_GetTicks() - frameStart; // Get time frame has elapsed
 
-			if (frameDelay > frameTime)
-				SDL_Delay(frameDelay - frameTime); // Delay next frame
-
 			// If x pressed close window
-			SDL_Event event;
 			while (SDL_PollEvent(&event))
 			{
 				switch (event.type)
@@ -65,12 +62,11 @@ namespace Pheon {
 				case SDL_EVENT_QUIT:
 					m_IsWindowOpen = false;
 					break;
-
 				case SDL_EVENT_MOUSE_BUTTON_DOWN:
-					m_IsMouseClicked = !m_IsMouseClicked;
+					m_IsMouseClicked = true;
 					break;
 				case SDL_EVENT_MOUSE_BUTTON_UP:
-					m_IsMouseClicked = !m_IsMouseClicked;
+					m_IsMouseClicked = false;
 					break;
 
 				case SDL_EVENT_WINDOW_SHOWN:
@@ -86,6 +82,9 @@ namespace Pheon {
 
 				OnEvent(&event);
 			}
+
+			if (frameDelay > frameTime)
+				SDL_Delay(frameDelay - frameTime); // Delay next frame
 		}
 	}
 

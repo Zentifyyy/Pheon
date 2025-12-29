@@ -1,6 +1,8 @@
 #include "PheonApplication.h"
 #include "PheonWidgets.h"
 
+#include <iostream>
+
 class ExampleProject : public Pheon::Application {
 public:
 
@@ -10,7 +12,7 @@ public:
 
 	void OnEvent(SDL_Event* Event) override
 	{
-		if (Event->type == SDL_EVENT_WINDOW_RESIZED || Event->type == SDL_EVENT_WINDOW_SHOWN)
+		if (Event->type == SDL_EVENT_WINDOW_RESIZED or Event->type == SDL_EVENT_WINDOW_SHOWN or Event->type)
 		{
 			m_QuitButtonRect = { (float)m_WindowWidth - 110, (float)m_WindowHeight - 60, 100, 50 };
 
@@ -24,6 +26,8 @@ public:
 	{
 		if (m_ExitButton)
 			CloseWindow();
+
+		std::cout << m_TestButton;
 	}
 
 private:
@@ -35,9 +39,13 @@ private:
 	Pheon::Vector2 m_LogoPos{ 0,0 };
 	const Pheon::Vector2 m_LogoOffset{ 50,0 };
 
+	SDL_FRect m_TestButtonPos{ 400,500, 100, 50 };
+
 	Pheon::Widgets::PheonLabel m_Label{ "Hello World", &m_LabelPos, 0.4f, this };
 
 	Pheon::Widgets::PheonButton m_ExitButton{ "Exit", &m_QuitButtonRect, this };
+
+	Pheon::Widgets::PheonButton m_TestButton{ "bleh", &m_TestButtonPos, this };
 
 	Pheon::Widgets::PheonImage m_Image{ "img/icon.bmp", &m_LogoPos , .175f, this };
 };

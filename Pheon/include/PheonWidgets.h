@@ -45,7 +45,8 @@ namespace Pheon
 		public:
 
 			bool Pressed = false;
-
+			SDL_Event event;
+			
 			const char* m_Text;
 			SDL_FRect* m_Rect;
 			Vector2 TextPos{0,0};

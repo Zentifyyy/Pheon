@@ -49,6 +49,8 @@ namespace Pheon {
 
 	private:
 
+		SDL_Event event;
+
 		bool m_IsWindowOpen = true;
 
 		SDL_Surface* m_WindowIcon = nullptr;

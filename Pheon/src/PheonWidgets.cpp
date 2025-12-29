@@ -52,20 +52,26 @@ namespace Pheon
 
 		void PheonButton::Render()
 		{
+			Pressed = false;
+
 			if (Utils::IsMouseHoveringRect(*m_Rect))
 			{
-				if (!app->m_IsMouseClicked) {
-					Utils::SetRenderColour(app->m_Renderer, Colours::ButtonColourHovered);
-					SDL_RenderFillRect(app->m_Renderer, m_Rect);
-					Pressed = false;
-				}
-				else
+				while (SDL_PollEvent(&event))
 				{
-					Utils::SetRenderColour(app->m_Renderer, Colours::ButtonColourPressed);
-					SDL_RenderFillRect(app->m_Renderer, m_Rect);
-					Pressed = true;
+					if (event.type == SDL_EVENT_MOUSE_BUTTON_UP)
+					{
+						Utils::SetRenderColour(app->m_Renderer, Colours::ButtonColourPressed);
+						SDL_RenderFillRect(app->m_Renderer, m_Rect);
+						Pressed = true;
+					}
+					else
+					{
+						Utils::SetRenderColour(app->m_Renderer, Colours::ButtonColourHovered);
+						SDL_RenderFillRect(app->m_Renderer, m_Rect);
+						Pressed = false;
+					} 
 				}
-			}
+				}
 			else
 			{
 				Utils::SetRenderColour(app->m_Renderer, Colours::ButtonColour);
