@@ -4,6 +4,8 @@ namespace Pheon {
 	{
 	public:
 		virtual void Render() {};
+
+		virtual void OnMouseUp() {};
 	};
 }
 

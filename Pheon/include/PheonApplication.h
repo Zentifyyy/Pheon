@@ -48,7 +48,7 @@ namespace Pheon {
 		std::vector<PheonWidget*> m_RenderQueue{};
 
 	private:
-
+		
 		SDL_Event event;
 
 		bool m_IsWindowOpen = true;

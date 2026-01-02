@@ -67,8 +67,14 @@ namespace Pheon {
 					break;
 				case SDL_EVENT_MOUSE_BUTTON_UP:
 					m_IsMouseClicked = false;
+					
+					for (int i{}; i < m_RenderQueue.size(); i++) 
+					{
+						m_RenderQueue.at(i)->OnMouseUp();
+					}
+						
+					
 					break;
-
 				case SDL_EVENT_WINDOW_SHOWN:
 					SDL_GetWindowSize(m_Window, &m_WindowWidth, &m_WindowHeight);
 					break;

@@ -1,6 +1,5 @@
 #include "PheonApplication.h"
 #include "PheonWidgets.h"
-
 #include <iostream>
 
 class ExampleProject : public Pheon::Application {
@@ -26,8 +25,6 @@ public:
 	{
 		if (m_ExitButton)
 			CloseWindow();
-
-		std::cout << m_TestButton;
 	}
 
 private:
@@ -41,13 +38,15 @@ private:
 
 	SDL_FRect m_TestButtonPos{ 400,500, 100, 50 };
 
+	Pheon::Vector2 m_ImageButtonPos{ 100,300 };
+
 	Pheon::Widgets::PheonLabel m_Label{ "Hello World", &m_LabelPos, 0.4f, this };
 
-	Pheon::Widgets::PheonButton m_ExitButton{ "Exit", &m_QuitButtonRect, this };
+	Pheon::Widgets::PheonButton m_ExitButton{ "Exit", m_QuitButtonRect, this };
 
-	Pheon::Widgets::PheonButton m_TestButton{ "bleh", &m_TestButtonPos, this };
+	Pheon::Widgets::PheonButton m_TestButton{ "bleh", m_TestButtonPos, this };
 
-	Pheon::Widgets::PheonImage m_Image{ "img/icon.bmp", &m_LogoPos , .175f, this };
+	Pheon::Widgets::PheonImage m_Image{ "img/icon.bmp", m_LogoPos , .175f, this };
 };
 
 int main()
