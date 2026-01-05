@@ -1,5 +1,8 @@
 #pragma once
-#include "SDL3/SDL.h"
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_surface.h>
+#include <SDL3/SDL_video.h>
 #include "SDL3_ttf/SDL_ttf.h"
 #include "PheonWidgetBase.h"
 #include "vector"
@@ -30,7 +33,7 @@ namespace Pheon {
 		virtual void Start() {};
 
 		// Define what happens every time an SDL_Event is triggered in your own file.
-		virtual void OnEvent(SDL_Event* Event) {};
+		virtual void OnEvent(const SDL_Event& Event) {};
 		
 		// Close Current Window
 		void CloseWindow();
@@ -49,7 +52,7 @@ namespace Pheon {
 
 	private:
 		
-		SDL_Event event;
+		SDL_Event event{};
 
 		bool m_IsWindowOpen = true;
 

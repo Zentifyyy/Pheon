@@ -1,5 +1,7 @@
 #pragma once
-#include "SDL3/SDL.h"
+#include <SDL3/SDL_pixels.h>
+#include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_render.h>
 #include "SDL3_ttf/SDL_ttf.h"
 
 namespace Pheon 
@@ -43,6 +45,9 @@ namespace Pheon
 		const SDL_Color ButtonBorderColour{ 60, 60, 60, 255 };
 
 		const SDL_Color TextColour{ 230, 230, 230, 255 };
+
+		const SDL_Color BoxColour{ 25,25,25,255 };
+		const SDL_Color BoxBorderColour{ 30,30,30,255 };
 
 	}
 

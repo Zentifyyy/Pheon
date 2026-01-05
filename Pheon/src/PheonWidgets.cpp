@@ -5,7 +5,7 @@ namespace Pheon
 	namespace Widgets
 	{
 		// Pheon Label
-		PheonLabel::PheonLabel(const char* Text, Vector2* position, const float& Scale, Application* Application)
+		Label::Label(const char* Text, Vector2* position, const float& Scale, Application* Application)
 			: m_Position(position), m_Application(Application), m_Scale(Scale) 
 		{
 			m_Surface = TTF_RenderText_Solid(m_Application->m_MainFont, Text, NULL, Colours::TextColour);
@@ -15,7 +15,7 @@ namespace Pheon
 			Application->m_RenderQueue.emplace_back(this);
 		};
 
-		void PheonLabel::UpdateText(const char* Text)
+		void Label::UpdateText(const char* Text)
 		{
 			SDL_DestroySurface(m_Surface);
 			SDL_DestroyTexture(m_Texture);
@@ -25,21 +25,21 @@ namespace Pheon
 			m_Texture = SDL_CreateTextureFromSurface(m_Application->m_Renderer, m_Surface);
 		}
 
-		void PheonLabel::Render()
+		void Label::Render()
 		{
 			m_Rect = { m_Position->x, m_Position->y, m_Texture->w * m_Scale, m_Texture->h * m_Scale };
 
 			SDL_RenderTexture(m_Application->m_Renderer, m_Texture, NULL, &m_Rect);
 		}
 
-		PheonLabel::~PheonLabel()
+		Label::~Label()
 		{
 			SDL_DestroySurface(m_Surface);
 			SDL_DestroyTexture(m_Texture);
 		}
 
 		// Pheon Button
-		PheonButton::PheonButton(const char* ButtonText, SDL_FRect& ButtonRect, Application* Application)
+		Button::Button(const char* ButtonText, SDL_FRect& ButtonRect, Application* Application)
 			: m_Text(ButtonText), m_Rect(ButtonRect), app(Application)
 		{
 			TextPos = Pheon::Utils::CenterPosInRect(m_Rect) - 
@@ -47,16 +47,16 @@ namespace Pheon
 
 			Application->m_RenderQueue.emplace_back(this);
 			
-			m_label = new PheonLabel{ ButtonText , &TextPos, 0.25f , app };
+			m_label = new Label{ ButtonText , &TextPos, 0.25f , app };
 		};
 
-		void PheonButton::OnMouseUp() 
+		void Button::OnMouseUp() 
 		{
 			if (Utils::IsMouseHoveringRect(m_Rect))
 				Pressed = true;
 		}
 
-		void PheonButton::Render()
+		void Button::Render()
 		{
 			if (Utils::IsMouseHoveringRect(m_Rect))
 			{
@@ -86,13 +86,13 @@ namespace Pheon
 			Utils::SetRenderColour(app->m_Renderer, Colours::BackgroundColour);
 		}
 
-		PheonButton::~PheonButton() 
+		Button::~Button() 
 		{
 			delete m_label;
 		}
 
 		// Pheon Image
-		PheonImage::PheonImage(const char* FilePath, Vector2& pos, const float& Scale, Application* Application)
+		Image::Image(const char* FilePath, Vector2& pos, const float& Scale, Application* Application)
 			: m_Position(pos), m_Application(Application), m_Scale(Scale)
 		{
 			m_Surface = IMG_Load(FilePath);
@@ -104,26 +104,26 @@ namespace Pheon
 			Application->m_RenderQueue.emplace_back(this);
 		};
 
-		void PheonImage::Render()
+		void Image::Render()
 		{
 			m_Rect = { m_Position.x,m_Position.y,m_Texture->w * m_Scale,m_Texture->h * m_Scale };
 
 			SDL_RenderTexture(m_Application->m_Renderer, m_Texture, NULL, &m_Rect);
 		}
 
-		PheonImage::~PheonImage() 
+		Image::~Image() 
 		{
 			SDL_DestroyTexture(m_Texture);
 			SDL_DestroySurface(m_Surface);
 		}
 
-		Vector2 PheonImage::GetSize()
+		Vector2 Image::GetSize()
 		{
 			return { (float)m_Texture->w, (float)m_Texture->h };
 		}
 
 		// Pheon Image Button
-		PheonImageButton::PheonImageButton(const char* FilePath, Vector2& pos, Application* Application):
+		ImageButton::ImageButton(const char* FilePath, Vector2& pos, Application* Application):
 			m_Position(pos), m_Application(Application)
 		{
 			m_Surface = IMG_Load(FilePath);
@@ -134,13 +134,13 @@ namespace Pheon
 			Application->m_RenderQueue.emplace_back(this);
 		}
 
-		PheonImageButton::~PheonImageButton()
+		ImageButton::~ImageButton()
 		{
 			SDL_DestroySurface(m_Surface);
 			SDL_DestroyTexture(m_Texture);
 		}
 
-		void PheonImageButton::OnMouseUp()
+		void ImageButton::OnMouseUp()
 		{
 			if (Utils::IsMouseHoveringRect(m_Rect))
 				Pressed = true;
@@ -148,7 +148,7 @@ namespace Pheon
 				Pressed = false;
 		}
 
-		void PheonImageButton::Render()
+		void ImageButton::Render()
 		{
 			if (Utils::IsMouseHoveringRect(m_Rect))
 			{

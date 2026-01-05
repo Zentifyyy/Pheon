@@ -8,17 +8,17 @@ namespace Pheon
 {
 	namespace Widgets
 	{
-		class PheonLabel: public PheonWidget 
+		class Label: public PheonWidget 
 		{
 		public:
 
-			PheonLabel(const char* Text, Vector2* position, const float& Scale, Application* Application);
+			Label(const char* Text, Vector2* position, const float& Scale, Application* Application);
 
 			void UpdateText(const char* Text);
 
-			void Render();
+			void Render() override;
 			
-			~PheonLabel();
+			~Label();
 
 		private:
 			Vector2* m_Position;
@@ -30,19 +30,19 @@ namespace Pheon
 			SDL_Texture* m_Texture = nullptr;
 		};
 
-		class PheonButton : public PheonWidget 
+		class Button : public PheonWidget 
 		{
 		public:
 
-			PheonButton(const char* ButtonText, SDL_FRect& ButtonRect, Application* Application);
+			Button(const char* ButtonText, SDL_FRect& ButtonRect, Application* Application);
 
-			void Render();
+			void Render() override;
 
-			void OnMouseUp();
+			void OnMouseUp() override;
 
 			operator bool() { return Pressed; };
 
-			~PheonButton();
+			~Button();
 
 			bool Pressed = false;
 
@@ -50,19 +50,19 @@ namespace Pheon
 			const char* m_Text;
 			SDL_FRect& m_Rect;
 			Vector2 TextPos{ 0,0 };
-			PheonLabel* m_label;
+			Label* m_label;
 			Application* app;
 		};
 
 
-		class PheonImage : public PheonWidget 
+		class Image : public PheonWidget 
 		{
 		public:
-			PheonImage(const char* FilePath, Vector2& pos, const float& Scale, Application* Application);
+			Image(const char* FilePath, Vector2& pos, const float& Scale, Application* Application);
 
-			~PheonImage();
+			~Image();
 		
-			void Render();
+			void Render() override;
 
 			Vector2 GetSize();
 
@@ -76,19 +76,19 @@ namespace Pheon
 			SDL_Texture* m_Texture = nullptr;
 		};
 
-		class PheonImageButton : public PheonWidget 
+		class ImageButton : public PheonWidget 
 		{
 		public:
 			
-			PheonImageButton(const char* FilePath, Vector2& pos, Application* Application);
+			ImageButton(const char* FilePath, Vector2& pos, Application* Application);
 			
-			~PheonImageButton();
+			~ImageButton();
 
 			operator bool() { return Pressed; }
 
-			void OnMouseUp();
+			void OnMouseUp() override;
 
-			void Render();
+			void Render() override;
 
 			bool Pressed = false;
 
@@ -99,5 +99,44 @@ namespace Pheon
 			SDL_Texture* m_Texture = nullptr;
 			SDL_Surface* m_Surface = nullptr;
 		};
+
+		class ContentBox : public PheonWidget {
+		public:
+
+			ContentBox(SDL_FRect& Rect, const SDL_Color& RenderColour, const SDL_Color& BorderColor, Application* Application)
+				: m_RenderColour(RenderColour), m_Application(Application), 
+					m_DrawBorder(true), m_BorderColour(BorderColor), m_Rect(Rect) 
+			{
+				Application->m_RenderQueue.emplace_back(this);
+			};
+
+			/*ContentBox(SDL_FRect& Rect, SDL_Color& RenderColour, Application* Application)
+				: m_RenderColour(RenderColour), m_Application(Application), 
+					m_DrawBorder(false), m_Rect(Rect) 
+			{
+				Application->m_RenderQueue.emplace_back(this);
+			};*/
+
+			void Render() override 
+			{
+				Utils::SetRenderColour(m_Application->m_Renderer, m_RenderColour);
+				SDL_RenderFillRect(m_Application->m_Renderer, &m_Rect);
+
+				if (m_DrawBorder) 
+				{
+					Utils::SetRenderColour(m_Application->m_Renderer, m_BorderColour);
+					SDL_RenderRect(m_Application->m_Renderer, &m_Rect);
+				}	
+			}
+
+			const SDL_Color& m_RenderColour;
+			const SDL_Color& m_BorderColour;
+
+		private:
+			SDL_FRect& m_Rect;
+			const bool m_DrawBorder;
+			Application* m_Application;
+		};
+		
 	}
 }

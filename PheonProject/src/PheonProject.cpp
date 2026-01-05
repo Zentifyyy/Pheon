@@ -1,6 +1,5 @@
 #include "PheonApplication.h"
 #include "PheonWidgets.h"
-#include <iostream>
 
 class ExampleProject : public Pheon::Application {
 public:
@@ -9,15 +8,17 @@ public:
 
 	void Start() override {}
 
-	void OnEvent(SDL_Event* Event) override
+	void OnEvent(const SDL_Event& Event) override
 	{
-		if (Event->type == SDL_EVENT_WINDOW_RESIZED or Event->type == SDL_EVENT_WINDOW_SHOWN or Event->type)
+		if (Event.type == SDL_EVENT_WINDOW_RESIZED or Event.type == SDL_EVENT_WINDOW_SHOWN or Event.type)
 		{
 			m_QuitButtonRect = { (float)m_WindowWidth - 110, (float)m_WindowHeight - 60, 100, 50 };
 
 			m_LabelPos = { m_WindowWidth / 2 - Pheon::Utils::GetTextSize("Hello World", m_MainFont, .4f).x / 2, 100 };
 
 			m_LogoPos = m_LabelPos - m_LogoOffset;
+
+			BackgroundRect = { m_LogoPos.x - 10, m_LogoPos.y - 5, 275, 55 };
 		}
 	}
 
@@ -40,13 +41,16 @@ private:
 
 	Pheon::Vector2 m_ImageButtonPos{ 100,300 };
 
-	Pheon::Widgets::PheonLabel m_Label{ "Hello World", &m_LabelPos, 0.4f, this };
+	SDL_FRect BackgroundRect{ 0,0,0,0 };
+	Pheon::Widgets::ContentBox Background{ BackgroundRect,Pheon::Colours::BoxColour,Pheon::Colours::BoxBorderColour,this };
 
-	Pheon::Widgets::PheonButton m_ExitButton{ "Exit", m_QuitButtonRect, this };
+	Pheon::Widgets::Label m_Label{ "Hello World", &m_LabelPos, 0.4f, this };
 
-	Pheon::Widgets::PheonButton m_TestButton{ "bleh", m_TestButtonPos, this };
+	Pheon::Widgets::Button m_ExitButton{ "Exit", m_QuitButtonRect, this };
 
-	Pheon::Widgets::PheonImage m_Image{ "img/icon.bmp", m_LogoPos , .175f, this };
+	Pheon::Widgets::Button m_TestButton{ "bleh", m_TestButtonPos, this };
+
+	Pheon::Widgets::Image m_Image{ "img/icon.bmp", m_LogoPos , .175f, this };
 };
 
 int main()

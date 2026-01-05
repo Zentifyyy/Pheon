@@ -1,5 +1,4 @@
 #include "PheonApplication.h"
-#include <iostream>
 
 namespace Pheon {
 
@@ -86,7 +85,7 @@ namespace Pheon {
 					break;
 				}
 
-				OnEvent(&event);
+				OnEvent(event);
 			}
 
 			if (frameDelay > frameTime)
