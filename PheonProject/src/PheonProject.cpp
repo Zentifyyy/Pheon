@@ -32,14 +32,14 @@ private:
 
 	SDL_FRect m_QuitButtonRect{ 0,0,100,50 };
 
-	Pheon::Vector2 m_LabelPos{ 0,0 };
+	Pheon::Vector2<float> m_LabelPos{ 0,0 };
 
-	Pheon::Vector2 m_LogoPos{ 0,0 };
-	const Pheon::Vector2 m_LogoOffset{ 50,0 };
+	Pheon::Vector2<float> m_LogoPos{ 0,0 };
+	const Pheon::Vector2<float> m_LogoOffset{ 50,0 };
 
 	SDL_FRect m_TestButtonPos{ 400,500, 100, 50 };
 
-	Pheon::Vector2 m_ImageButtonPos{ 100,300 };
+	Pheon::Vector2<float> m_ImageButtonPos{ 100,300 };
 
 	SDL_FRect BackgroundRect{ 0,0,0,0 };
 	Pheon::Widgets::ContentBox Background{ BackgroundRect,Pheon::Colours::BoxColour,Pheon::Colours::BoxBorderColour,this };

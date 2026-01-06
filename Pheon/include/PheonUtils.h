@@ -6,14 +6,11 @@
 
 namespace Pheon 
 {
+	template <typename UserType>
 	class Vector2
 	{
 	public:
-		Vector2(const float& x, const float& y) : x(x), y(y) {};
-
-		// If PositionOrSize == True, will return a Vector2 with the position.
-		// If PositionOrSize == False, will return a Vector2 with the size.
-		Vector2(const SDL_FRect& Rect, bool PositionOrSize);
+		Vector2(const UserType& x, const UserType& y) : x(x), y(y) {};
 
 		const Vector2 operator / (int other) 
 		{
@@ -30,9 +27,8 @@ namespace Pheon
 			return Vector2(x + other.x, y + other.y);
 		}
 
-
 	public:
-		float x, y;
+		UserType x, y;
 	};
 
 	namespace Colours {
@@ -55,10 +51,10 @@ namespace Pheon
 	{
 		bool IsMouseHoveringRect(const SDL_FRect& Rect);
 
-		Pheon::Vector2 CenterPosInRect(const SDL_FRect& Rect);
+		Pheon::Vector2<float> CenterPosInRectF(const SDL_FRect& Rect);
 
 		void SetRenderColour(SDL_Renderer* Renderer, const SDL_Color& Colour);
 
-		Pheon::Vector2 GetTextSize(const char* Text, TTF_Font* Font, const float Scale);
+		Pheon::Vector2<float> GetTextSize(const char* Text, TTF_Font* Font, const float& Scale);
 	}
 }

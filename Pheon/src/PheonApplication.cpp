@@ -1,4 +1,5 @@
 #include "PheonApplication.h"
+#include <algorithm>
 
 namespace Pheon {
 
@@ -44,9 +45,9 @@ namespace Pheon {
 
 			Update();
 
-			for (int i = 0; i < m_RenderQueue.size(); i++)
+			for (const auto& i : m_RenderQueue)
 			{
-				m_RenderQueue[i]->Render();
+				i->Render();
 			}
 
 			SDL_RenderPresent(m_Renderer);
@@ -67,11 +68,10 @@ namespace Pheon {
 				case SDL_EVENT_MOUSE_BUTTON_UP:
 					m_IsMouseClicked = false;
 					
-					for (int i{}; i < m_RenderQueue.size(); i++) 
+					for (const auto& i : m_RenderQueue) 
 					{
-						m_RenderQueue.at(i)->OnMouseUp();
+						i->OnMouseUp();
 					}
-						
 					
 					break;
 				case SDL_EVENT_WINDOW_SHOWN:

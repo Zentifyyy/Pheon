@@ -5,7 +5,7 @@ namespace Pheon
 	namespace Widgets
 	{
 		// Pheon Label
-		Label::Label(const char* Text, Vector2* position, const float& Scale, Application* Application)
+		Label::Label(const char* Text, Vector2<float>* position, const float& Scale, Application* Application)
 			: m_Position(position), m_Application(Application), m_Scale(Scale) 
 		{
 			m_Surface = TTF_RenderText_Solid(m_Application->m_MainFont, Text, NULL, Colours::TextColour);
@@ -42,7 +42,7 @@ namespace Pheon
 		Button::Button(const char* ButtonText, SDL_FRect& ButtonRect, Application* Application)
 			: m_Text(ButtonText), m_Rect(ButtonRect), app(Application)
 		{
-			TextPos = Pheon::Utils::CenterPosInRect(m_Rect) - 
+			TextPos = Pheon::Utils::CenterPosInRectF(m_Rect) - 
 				Pheon::Utils::GetTextSize(m_Text, app->m_MainFont, 0.25f) / 2;
 
 			Application->m_RenderQueue.emplace_back(this);
@@ -81,7 +81,7 @@ namespace Pheon
 			Utils::SetRenderColour(app->m_Renderer,Colours::ButtonBorderColour);
 			SDL_RenderRect(app->m_Renderer, &m_Rect);
 
-			TextPos = Utils::CenterPosInRect(m_Rect) - Utils::GetTextSize(m_Text, app->m_MainFont, 0.25f) / 2;
+			TextPos = Utils::CenterPosInRectF(m_Rect) - Utils::GetTextSize(m_Text, app->m_MainFont, 0.25f) / 2;
 
 			Utils::SetRenderColour(app->m_Renderer, Colours::BackgroundColour);
 		}
@@ -92,14 +92,13 @@ namespace Pheon
 		}
 
 		// Pheon Image
-		Image::Image(const char* FilePath, Vector2& pos, const float& Scale, Application* Application)
+		Image::Image(const char* FilePath, Vector2<float>& pos, const float& Scale, Application* Application)
 			: m_Position(pos), m_Application(Application), m_Scale(Scale)
 		{
 			m_Surface = IMG_Load(FilePath);
-
 			m_Texture = SDL_CreateTextureFromSurface(Application->m_Renderer, m_Surface);
 
-			m_Rect = { pos.x,pos.y, m_Texture->w * Scale, m_Texture->h * Scale };
+			m_Rect = { pos.x, pos.y, m_Texture->w * Scale, m_Texture->h * Scale };
 
 			Application->m_RenderQueue.emplace_back(this);
 		};
@@ -117,13 +116,13 @@ namespace Pheon
 			SDL_DestroySurface(m_Surface);
 		}
 
-		Vector2 Image::GetSize()
+		Vector2<int> Image::GetSize()
 		{
-			return { (float)m_Texture->w, (float)m_Texture->h };
+			return { m_Texture->w, m_Texture->h };
 		}
 
 		// Pheon Image Button
-		ImageButton::ImageButton(const char* FilePath, Vector2& pos, Application* Application):
+		ImageButton::ImageButton(const char* FilePath, Vector2<float>& pos, Application* Application):
 			m_Position(pos), m_Application(Application)
 		{
 			m_Surface = IMG_Load(FilePath);

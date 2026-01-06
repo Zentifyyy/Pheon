@@ -12,7 +12,7 @@ namespace Pheon
 		{
 		public:
 
-			Label(const char* Text, Vector2* position, const float& Scale, Application* Application);
+			Label(const char* Text, Vector2<float>* position, const float& Scale, Application* Application);
 
 			void UpdateText(const char* Text);
 
@@ -21,7 +21,7 @@ namespace Pheon
 			~Label();
 
 		private:
-			Vector2* m_Position;
+			Vector2<float>* m_Position;
 			SDL_FRect m_Rect{};
 			float m_Scale;
 
@@ -49,7 +49,7 @@ namespace Pheon
 		private:
 			const char* m_Text;
 			SDL_FRect& m_Rect;
-			Vector2 TextPos{ 0,0 };
+			Vector2<float> TextPos{ 0,0 };
 			Label* m_label;
 			Application* app;
 		};
@@ -58,17 +58,17 @@ namespace Pheon
 		class Image : public PheonWidget 
 		{
 		public:
-			Image(const char* FilePath, Vector2& pos, const float& Scale, Application* Application);
+			Image(const char* FilePath, Vector2<float>& pos, const float& Scale, Application* Application);
 
 			~Image();
 		
 			void Render() override;
 
-			Vector2 GetSize();
+			Vector2<int> GetSize();
 
 		private:
 			SDL_FRect m_Rect{};
-			Vector2& m_Position;
+			Vector2<float>& m_Position;
 			float m_Scale;
 
 			Application* m_Application = nullptr;
@@ -80,7 +80,7 @@ namespace Pheon
 		{
 		public:
 			
-			ImageButton(const char* FilePath, Vector2& pos, Application* Application);
+			ImageButton(const char* FilePath, Vector2<float>& pos, Application* Application);
 			
 			~ImageButton();
 
@@ -93,7 +93,7 @@ namespace Pheon
 			bool Pressed = false;
 
 		private:
-			Vector2& m_Position;
+			Vector2<float>& m_Position;
 			SDL_FRect m_Rect{};
 			Application* m_Application = nullptr;
 			SDL_Texture* m_Texture = nullptr;

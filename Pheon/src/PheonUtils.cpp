@@ -2,19 +2,8 @@
 
 namespace Pheon 
 {
-	Vector2::Vector2(const SDL_FRect& Rect, bool PositionOrSize)
-	{
-		if (PositionOrSize) 
-		{
-			x = Rect.x;
-			y = Rect.y;;
-		}
-		else 
-		{
-			x = Rect.w;
-			y = Rect.h;
-		}
-	}
+
+
 
 	namespace Utils
 	{
@@ -34,9 +23,9 @@ namespace Pheon
 				return false;
 		}
 
-		Pheon::Vector2 CenterPosInRect(const SDL_FRect& Rect) 
+		Pheon::Vector2<float> CenterPosInRectF(const SDL_FRect& Rect) 
 		{
-			return Pheon::Vector2(Rect.x + (Rect.w / 2), Rect.y + (Rect.h / 2));
+			return Pheon::Vector2<float>(Rect.x + (Rect.w / 2), Rect.y + (Rect.h / 2));
 		}
 
 		void SetRenderColour(SDL_Renderer* Renderer, const SDL_Color& Colour)
@@ -44,11 +33,11 @@ namespace Pheon
 			SDL_SetRenderDrawColor(Renderer, Colour.r, Colour.g, Colour.b, Colour.a);
 		}
 	
-		Pheon::Vector2 GetTextSize(const char* Text, TTF_Font* Font, const float Scale)
+		Pheon::Vector2<float> GetTextSize(const char* Text, TTF_Font* Font, const float& Scale)
 		{
 			SDL_Surface* surface = TTF_RenderText_Solid(Font, Text, NULL, Colours::TextColour);
 			
-			const Vector2 size{ surface->w * Scale, surface->h * Scale };
+			const Vector2<float> size{ surface->w * Scale, surface->h * Scale };
 			
 			SDL_DestroySurface(surface);
 
