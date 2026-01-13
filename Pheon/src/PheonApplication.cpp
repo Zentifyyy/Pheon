@@ -4,8 +4,8 @@
 namespace Pheon {
 
 	Application::Application(const char* WindowName, const int& WindowWidth, const int& WindowHeight,
-		SDL_WindowFlags& WindowFlags, const bool& CustomTitlebar) 
-		:m_HasCustomTitlebar(CustomTitlebar), m_TitlebarRect(0, 0, WindowWidth, 32)
+		SDL_WindowFlags& WindowFlags, const bool& CustomTitlebar)
+		:m_HasCustomTitlebar(CustomTitlebar), m_TitlebarRect(0, 0, WindowWidth, 32 * m_HasCustomTitlebar)
 	{
 		if (m_HasCustomTitlebar) 
 			WindowFlags += SDL_WINDOW_BORDERLESS;
@@ -97,6 +97,7 @@ namespace Pheon {
 					break;
 				case SDL_EVENT_WINDOW_RESIZED:
 					SDL_GetWindowSize(m_Window, &m_WindowWidth, &m_WindowHeight);
+					m_TitlebarRect = { 0,0, (float)m_WindowWidth, 32 };
 					break;
 
 				default:
