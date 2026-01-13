@@ -5,7 +5,7 @@
 #include <SDL3/SDL_video.h>
 #include "SDL3_ttf/SDL_ttf.h"
 #include "PheonWidgetBase.h"
-#include "vector"
+#include <vector>
 
 namespace Pheon {
 
@@ -15,11 +15,11 @@ namespace Pheon {
 	class Application {
 	public:
 		
-		Application(const char* WindowName, const int WindowWidth, const int WindowHeight,
-			const SDL_WindowFlags WindowFlags);
+		Application(const char* WindowName, const int& WindowWidth, const int& WindowHeight,
+			SDL_WindowFlags& WindowFlags, const bool& CustomTitlebar);
 
-		Application(const char* WindowName, const int WindowWidth, const int WindowHeight,
-			const SDL_WindowFlags WindowFlags, const char* IconPath);
+		Application(const char* WindowName, const int& WindowWidth, const int& WindowHeight,
+			SDL_WindowFlags& WindowFlags, const char* IconPath, const bool& CustomTitlebar);
 
 		~Application();
 
@@ -38,6 +38,12 @@ namespace Pheon {
 		// Close Current Window
 		void CloseWindow();
 
+		// Minimise Current Window
+		void MinimiseWindow();
+
+		// Toggle Fullscreen
+		void FullScreenWindow();
+
 		SDL_Window* m_Window = nullptr;
 
 		SDL_Renderer* m_Renderer = nullptr;
@@ -51,10 +57,14 @@ namespace Pheon {
 		std::vector<PheonWidget*> m_RenderQueue{};
 
 	private:
-		
+
+		bool m_HasCustomTitlebar;
+		SDL_FRect m_TitlebarRect;
+
 		SDL_Event event{};
 
 		bool m_IsWindowOpen = true;
+		bool m_IsWindowFullscreen = true;
 
 		SDL_Surface* m_WindowIcon = nullptr;
 	};

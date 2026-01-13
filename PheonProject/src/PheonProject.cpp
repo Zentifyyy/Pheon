@@ -10,9 +10,11 @@ public:
 
 	void OnEvent(const SDL_Event& Event) override
 	{
-		if (Event.type == SDL_EVENT_WINDOW_RESIZED or Event.type == SDL_EVENT_WINDOW_SHOWN or Event.type)
+		if (Event.type == SDL_EVENT_WINDOW_RESIZED or Event.type == SDL_EVENT_WINDOW_SHOWN)
 		{
-			m_QuitButtonRect = { (float)m_WindowWidth - 110, (float)m_WindowHeight - 60, 100, 50 };
+			m_ExitButton.UpdateRect({ m_WindowWidth - 30.0f, 9, 16, 16 });
+			m_WindowButton.UpdateRect({ m_WindowWidth - 60.0f, 9, 16, 16 });
+			m_MinimiseButton.UpdateRect({ m_WindowWidth - 90.0f, 9, 16, 16 });
 
 			m_LabelPos = { m_WindowWidth / 2 - Pheon::Utils::GetTextSize("Hello World", m_MainFont, .4f).x / 2, 100 };
 
@@ -26,11 +28,15 @@ public:
 	{
 		if (m_ExitButton)
 			CloseWindow();
+
+		if (m_MinimiseButton)
+			MinimiseWindow();
+
+		if (m_WindowButton)
+			FullScreenWindow();
 	}
 
 private:
-
-	SDL_FRect m_QuitButtonRect{ 0,0,100,50 };
 
 	Pheon::Vector2<float> m_LabelPos{ 0,0 };
 
@@ -39,14 +45,19 @@ private:
 
 	SDL_FRect m_TestButtonPos{ 400,500, 100, 50 };
 
-	Pheon::Vector2<float> m_ImageButtonPos{ 100,300 };
-
 	SDL_FRect BackgroundRect{ 0,0,0,0 };
 	Pheon::Widgets::ContentBox Background{ BackgroundRect,Pheon::Colours::BoxColour,Pheon::Colours::BoxBorderColour,this };
 
 	Pheon::Widgets::Label m_Label{ "Hello World", &m_LabelPos, 0.4f, this };
 
-	Pheon::Widgets::Button m_ExitButton{ "Exit", m_QuitButtonRect, this };
+	SDL_FRect m_ExitButtonRect{ 100,300, 16, 16 };
+	Pheon::Widgets::ImageButton m_ExitButton{ "img/Exit.png", m_ExitButtonRect, this};
+
+	SDL_FRect m_WindowButtonRect{ 100,300, 16, 16 };
+	Pheon::Widgets::ImageButton m_WindowButton{ "img/Window.png", m_WindowButtonRect, this};
+
+	SDL_FRect m_MinimiseButtonRect{ 100,300, 16, 16 };
+	Pheon::Widgets::ImageButton m_MinimiseButton{ "img/Minimise.png", m_MinimiseButtonRect, this};
 
 	Pheon::Widgets::Button m_TestButton{ "bleh", m_TestButtonPos, this };
 
@@ -57,7 +68,8 @@ int main()
 {
 	TTF_Init();
 
-	ExampleProject app("Pheon Project", 900,600, SDL_WINDOW_RESIZABLE,"img/icon.bmp");
+	SDL_WindowFlags flags = SDL_WINDOW_RESIZABLE;
+	ExampleProject app("Pheon Project", 900, 600, flags, "img/icon.bmp", true);
 	app.InitLoop(60);
 
 	TTF_Quit();

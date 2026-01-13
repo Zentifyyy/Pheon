@@ -122,13 +122,23 @@ namespace Pheon
 		}
 
 		// Pheon Image Button
-		ImageButton::ImageButton(const char* FilePath, Vector2<float>& pos, Application* Application):
+		ImageButton::ImageButton(const char* FilePath, Vector2<float>& pos, const float& scale 
+			,Application* Application):
 			m_Position(pos), m_Application(Application)
 		{
 			m_Surface = IMG_Load(FilePath);
 			m_Texture = SDL_CreateTextureFromSurface(Application->m_Renderer, m_Surface);
 
-			m_Rect = { m_Position.x,m_Position.y, (float)m_Texture->w, (float)m_Texture->h };
+			m_Rect = { m_Position.x,m_Position.y, m_Texture->w * scale, m_Texture->h * scale };
+
+			Application->m_RenderQueue.emplace_back(this);
+		}
+
+		ImageButton::ImageButton(const char* FilePath, SDL_FRect& rect
+			, Application* Application) : m_Application(Application), m_Position(0,0), m_Rect(rect)
+		{
+			m_Surface = IMG_Load(FilePath);
+			m_Texture = SDL_CreateTextureFromSurface(Application->m_Renderer, m_Surface);
 
 			Application->m_RenderQueue.emplace_back(this);
 		}
@@ -147,6 +157,11 @@ namespace Pheon
 				Pressed = false;
 		}
 
+		void ImageButton::UpdateRect(const SDL_FRect& rect) 
+		{
+			m_Rect = rect;
+		}
+
 		void ImageButton::Render()
 		{
 			if (Utils::IsMouseHoveringRect(m_Rect))
@@ -155,6 +170,8 @@ namespace Pheon
 
 				if (m_Application->m_IsMouseClicked)
 					SDL_SetTextureColorMod(m_Texture, 80, 80, 80);
+				else
+					Pressed = false;
 			}
 			else
 			{
@@ -163,6 +180,27 @@ namespace Pheon
 			}
 
 			SDL_RenderTexture(m_Application->m_Renderer, m_Texture, NULL, &m_Rect);
+		}
+
+		// Content Box
+		ContentBox::ContentBox(SDL_FRect& Rect, const SDL_Color& RenderColour,
+			const SDL_Color& BorderColor, Application* Application)
+			: m_RenderColour(RenderColour), m_Application(Application),
+				m_DrawBorder(true), m_BorderColour(BorderColor), m_Rect(Rect)
+		{
+			m_Application->m_RenderQueue.emplace_back(this);
+		}
+
+		void ContentBox::Render() 
+		{
+			Utils::SetRenderColour(m_Application->m_Renderer, m_RenderColour);
+			SDL_RenderFillRect(m_Application->m_Renderer, &m_Rect);
+
+			if (m_DrawBorder)
+			{
+				Utils::SetRenderColour(m_Application->m_Renderer, m_BorderColour);
+				SDL_RenderRect(m_Application->m_Renderer, &m_Rect);
+			}
 		}
 	}
 }

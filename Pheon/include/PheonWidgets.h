@@ -1,8 +1,10 @@
 #pragma once
 #include "SDL3_image/SDL_image.h"
 #include "PheonUtils.h"
-#include "PheonApplication.h"
 #include "PheonWidgetBase.h"
+#include "PheonApplication.h"
+
+class Application;
 
 namespace Pheon 
 {
@@ -80,11 +82,15 @@ namespace Pheon
 		{
 		public:
 			
-			ImageButton(const char* FilePath, Vector2<float>& pos, Application* Application);
+			ImageButton(const char* FilePath, Vector2<float>& pos, const float& scale,Application* Application);
+
+			ImageButton(const char* FilePath, SDL_FRect& Rect, Application* Application);
 			
 			~ImageButton();
 
 			operator bool() { return Pressed; }
+
+			void UpdateRect(const SDL_FRect& rect);
 
 			void OnMouseUp() override;
 
@@ -93,7 +99,7 @@ namespace Pheon
 			bool Pressed = false;
 
 		private:
-			Vector2<float>& m_Position;
+			Vector2<float> m_Position;
 			SDL_FRect m_Rect{};
 			Application* m_Application = nullptr;
 			SDL_Texture* m_Texture = nullptr;
@@ -103,31 +109,10 @@ namespace Pheon
 		class ContentBox : public PheonWidget {
 		public:
 
-			ContentBox(SDL_FRect& Rect, const SDL_Color& RenderColour, const SDL_Color& BorderColor, Application* Application)
-				: m_RenderColour(RenderColour), m_Application(Application), 
-					m_DrawBorder(true), m_BorderColour(BorderColor), m_Rect(Rect) 
-			{
-				Application->m_RenderQueue.emplace_back(this);
-			};
+			ContentBox(SDL_FRect& Rect, const SDL_Color& RenderColour,
+				const SDL_Color& BorderColor, Application* Application);
 
-			/*ContentBox(SDL_FRect& Rect, SDL_Color& RenderColour, Application* Application)
-				: m_RenderColour(RenderColour), m_Application(Application), 
-					m_DrawBorder(false), m_Rect(Rect) 
-			{
-				Application->m_RenderQueue.emplace_back(this);
-			};*/
-
-			void Render() override 
-			{
-				Utils::SetRenderColour(m_Application->m_Renderer, m_RenderColour);
-				SDL_RenderFillRect(m_Application->m_Renderer, &m_Rect);
-
-				if (m_DrawBorder) 
-				{
-					Utils::SetRenderColour(m_Application->m_Renderer, m_BorderColour);
-					SDL_RenderRect(m_Application->m_Renderer, &m_Rect);
-				}	
-			}
+			void Render() override;
 
 			const SDL_Color& m_RenderColour;
 			const SDL_Color& m_BorderColour;

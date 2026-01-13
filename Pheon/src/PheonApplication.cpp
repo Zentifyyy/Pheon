@@ -1,32 +1,43 @@
 #include "PheonApplication.h"
-#include <algorithm>
+#include "PheonUtils.h"
 
 namespace Pheon {
 
-	Application::Application(const char* WindowName, const int WindowWidth, const int WindowHeight,
-		const SDL_WindowFlags WindowFlags)
+	Application::Application(const char* WindowName, const int& WindowWidth, const int& WindowHeight,
+		SDL_WindowFlags& WindowFlags, const bool& CustomTitlebar) 
+		:m_HasCustomTitlebar(CustomTitlebar), m_TitlebarRect(0, 0, WindowWidth, 32)
 	{
-		// Create Renderer and window
-		m_Window = SDL_CreateWindow(WindowName, WindowWidth, WindowHeight, WindowFlags);
+		if (m_HasCustomTitlebar) 
+			WindowFlags += SDL_WINDOW_BORDERLESS;
+
+		m_Window = SDL_CreateWindow(WindowName, WindowWidth, WindowHeight + (32 * m_HasCustomTitlebar), WindowFlags);
 		m_Renderer = SDL_CreateRenderer(m_Window, NULL);
 	}
 
-	Application::Application(const char* WindowName, const int WindowWidth, const int WindowHeight,
-		const SDL_WindowFlags WindowFlags, const char* IconPath)
+	Application::Application(const char* WindowName, const int& WindowWidth, const int& WindowHeight,
+		SDL_WindowFlags& WindowFlags, const char* IconPath, const bool& CustomTitlebar)
+		: m_HasCustomTitlebar(CustomTitlebar), m_TitlebarRect(0, 0, WindowWidth, 32)
 	{
-		// Create Renderer and window
-		m_Window = SDL_CreateWindow(WindowName, WindowWidth, WindowHeight, WindowFlags);
+		if (m_HasCustomTitlebar)
+			WindowFlags += SDL_WINDOW_BORDERLESS;
+
+		m_Window = SDL_CreateWindow(WindowName, WindowWidth, WindowHeight + (32 * m_HasCustomTitlebar), WindowFlags);
 		m_Renderer = SDL_CreateRenderer(m_Window, NULL);
 
 		// Set Window Icon
-		if (m_WindowIcon = SDL_LoadBMP(IconPath)) {
+		if (m_WindowIcon = SDL_LoadBMP(IconPath))
 			SDL_SetWindowIcon(m_Window, m_WindowIcon);
-		}
 	}
 
 	Application::~Application()
 	{
 		SDL_DestroySurface(m_WindowIcon);
+	}
+
+	void Application::FullScreenWindow() 
+	{
+		m_IsWindowFullscreen = !m_IsWindowFullscreen;
+		SDL_SetWindowFullscreen(m_Window, m_IsWindowFullscreen ? 0 : SDL_WINDOW_FULLSCREEN);
 	}
 
 	void Application::InitLoop(const int& FrameRate)
@@ -42,6 +53,13 @@ namespace Pheon {
 			frameStart = SDL_GetTicks(); // Get start of frame
 
 			SDL_RenderClear(m_Renderer);
+			
+			if (m_HasCustomTitlebar) 
+			{
+				Utils::SetRenderColour(m_Renderer, Colours::BoxBorderColour);
+				SDL_RenderFillRect(m_Renderer, &m_TitlebarRect);
+				Utils::SetRenderColour(m_Renderer, Colours::BackgroundColour);
+			}
 
 			Update();
 
@@ -96,5 +114,10 @@ namespace Pheon {
 	void Application::CloseWindow() 
 	{
 		m_IsWindowOpen = false;
+	}
+
+	void Application::MinimiseWindow() 
+	{
+		SDL_MinimizeWindow(m_Window);
 	}
 }
