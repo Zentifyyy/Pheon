@@ -60,7 +60,9 @@ namespace Pheon {
 
 		bool m_HasCustomTitlebar;
 		SDL_FRect m_TitlebarRect;
-		float m_TitlebarHeight = 32;
+
+		float MouseX{}, MouseY{};
+		float GlobalMouseX{}, GlobalMouseY{};
 
 		SDL_Event event{};
 

@@ -59,6 +59,19 @@ namespace Pheon {
 				Utils::SetRenderColour(m_Renderer, Colours::BoxBorderColour);
 				SDL_RenderFillRect(m_Renderer, &m_TitlebarRect);
 				Utils::SetRenderColour(m_Renderer, Colours::BackgroundColour);
+
+				if (m_IsMouseClicked) 
+				{
+					if (Utils::IsMouseHoveringRect(m_TitlebarRect)) 
+					{
+						if(!m_IsWindowFullscreen){ FullScreenWindow(); }
+
+						SDL_GetGlobalMouseState(&GlobalMouseX, &GlobalMouseY);
+						SDL_GetMouseState(&MouseX, &MouseY);
+						SDL_SetWindowPosition(m_Window, GlobalMouseX - MouseX, GlobalMouseY - MouseY);
+					}
+				}
+					
 			}
 
 			Update();
